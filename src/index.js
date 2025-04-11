@@ -3,6 +3,6 @@ class Toaster {
 
     }
     success(toast) {
-
+        
     }
 }
