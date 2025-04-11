@@ -1,16 +1,3 @@
-function injectCss(fileName: string) {
-    const cssUrl = new URL(fileName, import.meta.url).href;
-
-    if (document.querySelector(`link[href="${cssUrl}"]`)) return;
-
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = cssUrl;
-    document.head.appendChild(link);
-}
-
-injectCss('./style.css');
-
 import { icons } from "./icons.js";
 export class Toaster {
     constructor() {
