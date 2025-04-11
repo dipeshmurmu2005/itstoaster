@@ -1,6 +1,6 @@
 {
   "name": "itstoaster",
-  "version": "1.0.0",
+  "version": "0.1.1-alpha.1",
   "description": "A lightweight toast notification package for JavaScript",
   "keywords": [
     "toast",
@@ -10,18 +10,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/dipeshmurmu2005/toaster"
+    "url": "git+https://github.com/dipeshmurmu2005/toaster.git"
   },
   "license": "ISC",
   "author": "Dipesh Murmu",
   "type": "module",
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.esm.js",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.cjs.js"
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "files": [
