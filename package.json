@@ -8,11 +8,14 @@
     "notifications",
     "js"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dipeshmurmu2005/toaster.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "author": "Dipesh Murmu",
   "type": "module",
   "main": "./dist/index.js",
