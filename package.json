@@ -1,0 +1,19 @@
+{
+  "name": "toaster",
+  "version": "1.0.0",
+  "description": "toast package for js",
+  "keywords": [
+    "toasterjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "toasterjs"
+  },
+  "license": "ISC",
+  "author": "Dipesh Murmu",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
