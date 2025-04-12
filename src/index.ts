@@ -27,7 +27,7 @@ export class Toaster {
         this.container = null;
         this.containerId = containerId;
         this.iconFinder = new Icons();
-        this.positions = ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']
+        this.positions = ['top-left', 'top-center', 'top-right']
         this.createNotificationSection(containerId);
         this.attachListeners();
     }
@@ -55,7 +55,9 @@ export class Toaster {
             }
         }
         const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
-        this.createToast(finalInfo);
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
     }
 
     createToast(info: ToastInfo) {
@@ -112,10 +114,7 @@ export class Toaster {
         if (stackElements.length > 2) {
             stackElements.forEach((element, index) => {
                 if (index < 1) {
-                    element.classList.add('toast-removing');
-                    element.addEventListener('animationend', () => {
-                        element.remove();
-                    });
+                    // element.remove();
                 }
             })
         }
@@ -136,13 +135,10 @@ export class Toaster {
             elements.forEach((toast, index) => {
                 if (elements.length != index + 1) {
                     if (position == 'top-right' || position == 'top-center' || position == 'top-left') {
+                        var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
                         (toast as HTMLElement).style.position = "absolute";
                         (toast as HTMLElement).style.transform =
-                            `scale(${1 - ((elements.length - (index + 1)) / 15)}) translateY(${(elements.length - (index + 1)) * 10}px)`;
-                    } else if (position == 'bottom-right') {
-                        console.log('test');
-                        (toast as HTMLElement).style.transform =
-                            `scale(${1 - ((elements.length - (index + 1)) / 15)}) translateY(${(elements.length - (index + 1)) * 25}px)`;
+                            `scale(${scaleValue}) translateY(${((elements.length - (index + 1)) * 10) + scaleValue}px)`;
                     }
                 }
             })
@@ -159,12 +155,8 @@ export class Toaster {
                 stackElements.forEach((toast, toastIndex) => {
                     var position = toast.parentElement?.getAttribute('position');
                     const stackDimension = getY(stackElements, toastIndex);
-                    if (position != 'bottom-right') {
-                        toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
-                        (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
-                    } else {
-                        // (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
-                    }
+                    toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                    (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
                 })
             })
         })
@@ -174,9 +166,7 @@ export class Toaster {
                 var position = stack.getAttribute('position');
                 var toasts = stack.querySelectorAll('toast');
                 this.styleStack(stack.querySelectorAll('toast'), stack.getAttribute('position') ?? null);
-                if (position != 'bottom-right') {
-                    (stack as HTMLDivElement).style.height = 'fit-content';
-                }
+                (stack as HTMLDivElement).style.height = 'fit-content';
             })
         });
 
@@ -189,7 +179,7 @@ export class Toaster {
                         yValue += element.getBoundingClientRect().height + 20;
                     }
                 }
-                height += element.getBoundingClientRect().height + 20;
+                height += element.getBoundingClientRect().height;
             })
             return {
                 yValue: yValue,

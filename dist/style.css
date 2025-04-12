@@ -39,7 +39,7 @@
     right: 10px;
     top: auto !important;
     bottom: 20px;
-    border:1px solid red;
+    border: 1px solid red;
 }
 
 toast {
@@ -55,6 +55,7 @@ toast {
     cursor: pointer;
     animation: fadeindown 0.5s;
     pointer-events: all;
+    border: 1px solid rgb(208, 208, 208);
 }
 
 toast .content {
@@ -77,9 +78,13 @@ toast .dismiss-btn {
     cursor: pointer;
     outline: none;
     border: none;
-    color: red;
+    color: gray;
     margin-left: 10px;
     background-color: transparent;
+}
+
+toast .dismiss-btn:hover {
+    color: black;
 }
 
 toast .dismiss-btn:active {
@@ -88,13 +93,13 @@ toast .dismiss-btn:active {
 }
 
 h2 {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
     width: 210px;
 }
 
 p {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: gray;
 }
 
