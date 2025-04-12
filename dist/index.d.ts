@@ -1,11 +1,19 @@
 export declare class Toaster {
     private container;
-    constructor();
-    createNotificationSection(): void;
-    success(info: {
-        position: string;
+    private positions;
+    private iconFinder;
+    private containerId;
+    constructor(containerId?: string);
+    createNotificationSection(containerId: string): void;
+    success(info?: {
+        position?: string | null;
+        dissmissable?: boolean;
     }): void;
-    styleStack(position: string): void;
+    createToast(info: {
+        position?: string | null;
+        dismissable?: boolean;
+    } | undefined, iconName: string): void;
+    styleStack(elements: NodeList, position: string | null): void;
     attachListeners(): void;
 }
 //# sourceMappingURL=index.d.ts.map
