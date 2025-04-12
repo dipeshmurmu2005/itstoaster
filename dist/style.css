@@ -3,19 +3,34 @@
     padding: 0;
 }
 
+.toast-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    height: 800px;
+}
+
+.toast-stack.top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 320px;
+}
+
 .success-toast {
     height: fit-content;
     width: fit-content;
     padding: 10px 10px 10px 10px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
     border-radius: 5px;
     display: grid;
     background-color: white;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     display: flex;
     gap: 5px;
+    transform: translateY(0);
+    transition-duration: 0.3s;
+    cursor: pointer;
 }
 
 .success-toast .info {
@@ -36,6 +51,7 @@
     border: none;
     color: red;
     margin-left: 10px;
+    background-color: transparent;
 }
 
 .success-toast .dismiss-btn:active {
@@ -46,6 +62,7 @@
 h2 {
     font-size: 0.9rem;
     font-weight: 600;
+    width: 210px;
 }
 
 p {
