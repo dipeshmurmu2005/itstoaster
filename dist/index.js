@@ -21,14 +21,23 @@ export class Toaster {
         });
         document.body.appendChild(itstoasterContainer);
     }
-    success(info = {
-        position: 'top-right',
-        dissmissable: false
-    }) {
-        this.createToast(info, 'check_circle');
+    success(info = {}) {
+        const defaultInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: 'Toaster Integrated Successfully',
+            description: 'Enjoy using toaster',
+            icon: {
+                name: 'check_circle',
+                size: 30,
+                color: '#000000',
+            }
+        };
+        const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
+        this.createToast(finalInfo);
     }
-    createToast(info = { position: 'top-right', dismissable: false }, iconName) {
-        var _a;
+    createToast(info) {
+        var _a, _b, _c, _d, _e, _f;
         var toast = document.createElement('toast');
         toast.setAttribute('class', `success-toast toast-${info.position}`);
         var toastContent = document.createElement('div');
@@ -36,7 +45,11 @@ export class Toaster {
         // icon
         var icon = document.createElement('div');
         icon.setAttribute('class', 'icon');
-        icon.innerHTML = `${this.iconFinder.getIcon(iconName)}`;
+        icon.style.color = (_b = (_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) !== null && _b !== void 0 ? _b : '#000000';
+        var iconSvg = this.iconFinder.getIcon((_d = (_c = info.icon) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : '', (_e = info.icon) === null || _e === void 0 ? void 0 : _e.size);
+        if (iconSvg) {
+            icon.appendChild(iconSvg);
+        }
         var contentWrapper = document.createElement('div');
         contentWrapper.setAttribute('class', 'content');
         // content
@@ -51,33 +64,54 @@ export class Toaster {
         contentWrapper.appendChild(icon);
         contentWrapper.appendChild(content);
         // is dismissable
-        console.log(info.dismissable);
         if (info.dismissable) {
             let closeBtn = document.createElement('button');
             closeBtn.className = 'dismiss-btn';
-            closeBtn.innerHTML = `${this.iconFinder.getIcon('cross')}`;
+            var closeIcon = this.iconFinder.getIcon('cross');
+            if (closeIcon) {
+                closeBtn.appendChild(closeIcon);
+            }
             contentWrapper.appendChild(closeBtn);
             closeBtn.addEventListener('click', () => {
-                toast.remove();
+                toast.classList.add('toast-removing');
+                toast.addEventListener('animationend', () => {
+                    toast.remove();
+                });
             });
         }
         toast.appendChild(contentWrapper);
-        // add to stack
+        // remove more than 3 toast from stack
+        var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
+        if (stackElements.length > 2) {
+            stackElements.forEach((element, index) => {
+                if (index < 1) {
+                    element.classList.add('toast-removing');
+                    element.addEventListener('animationend', () => {
+                        element.remove();
+                    });
+                }
+            });
+        }
         var stack = $('#' + this.containerId + ' ' + '.' + info.position);
         if (stack) {
             stack.appendChild(toast);
         }
         var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
-        this.styleStack(stackElements, (_a = info.position) !== null && _a !== void 0 ? _a : null);
+        this.styleStack(stackElements, (_f = info.position) !== null && _f !== void 0 ? _f : null);
     }
     styleStack(elements, position) {
         if (elements.length > 1) {
             elements.forEach((toast, index) => {
-                toast.style.position = "absolute";
                 if (elements.length != index + 1) {
                     if (position == 'top-right' || position == 'top-center' || position == 'top-left') {
+                        toast.style.position = "absolute";
                         toast.style.transform =
                             `scale(${1 - ((elements.length - (index + 1)) / 15)}) translateY(${(elements.length - (index + 1)) * 10}px)`;
+                    }
+                    else if (position == 'bottom-right') {
+                        console.log('test');
+                        toast.style.transform =
+                            `scale(${1 - ((elements.length - (index + 1)) / 15)}) translateY(${(elements.length - (index + 1)) * 25}px)`;
                     }
                 }
             });
@@ -90,19 +124,28 @@ export class Toaster {
                 var _a;
                 var stackElements = Array.from((_a = stack.querySelectorAll('toast')) !== null && _a !== void 0 ? _a : []);
                 stackElements.forEach((toast, toastIndex) => {
+                    var _a;
+                    var position = (_a = toast.parentElement) === null || _a === void 0 ? void 0 : _a.getAttribute('position');
                     const stackDimension = getY(stackElements, toastIndex);
-                    toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
-                    stack.style.height = stackDimension.height + 'px';
+                    if (position != 'bottom-right') {
+                        toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                        stack.style.height = stackDimension.height + 'px';
+                    }
+                    else {
+                        // (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
+                    }
                 });
             });
         });
         toastStacks.forEach(stack => {
             stack.addEventListener('mouseleave', () => {
                 var _a;
-                console.log(stack.getAttribute('position'));
+                var position = stack.getAttribute('position');
                 var toasts = stack.querySelectorAll('toast');
                 this.styleStack(stack.querySelectorAll('toast'), (_a = stack.getAttribute('position')) !== null && _a !== void 0 ? _a : null);
-                stack.style.height = 'fit-content';
+                if (position != 'bottom-right') {
+                    stack.style.height = 'fit-content';
+                }
             });
         });
         function getY(stack, toastIndex) {

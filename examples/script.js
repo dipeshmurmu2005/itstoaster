@@ -1,47 +1,38 @@
 import { Toaster } from '../dist/index.js';
 const toast = new Toaster();
 toast.success({
-    title: 'Successfully Created 1',
+    title: 'Successfully Integrated Toast',
     description: 'You can now create your sales',
-    dismissable: false,
-    position: 'top-right',
+    dismissable: true,
+    position: 'top-left',
+    icon: {
+        size: 30,
+        color: '#000000'
+    }
 })
 
 toast.success({
-    title: 'Successfully Created 2',
+    title: 'Successfully Integrated Toast',
     description: 'You can now create your sales',
     dismissable: true,
-    position: 'top-right',
-})
-toast.success({
-    title: 'Successfully Created 2',
-    description: 'You can now create your sales',
-    dismissable: true,
-    position: 'top-right',
+    position: 'top-center',
+    icon: {
+        size: 30,
+        color: '#000000'
+    }
 })
 
-toast.success({
-    title: 'Successfully Created 1',
-    description: 'You can now create your sales',
-    dismissable: true,
-    position: 'top-left',
-})
+function showToast(index) {
+    toast.success({
+        title: 'Successfully Created' + index,
+        description: 'You can now create your sales',
+        dismissable: true,
+        position: 'bottom-right',
+    })
+}
+let index = 0;
 
-toast.success({
-    title: 'Successfully Created 2',
-    description: 'You can now create your sales',
-    dismissable: true,
-    position: 'top-left',
-})
-toast.success({
-    title: 'Successfully Created 2',
-    description: 'You can now create your sales',
-    dismissable: true,
-    position: 'top-left',
-})
-toast.success({
-    title: 'Successfully Created 2',
-    description: 'You can now create your sales',
-    dismissable: false,
-    position: 'top-left',
+document.getElementById('showtoast').addEventListener('click', () => {
+    index++;
+    showToast(index);
 })

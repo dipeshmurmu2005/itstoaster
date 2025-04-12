@@ -22,12 +22,23 @@ export class Icons {
             }
         ];
     }
-    getIcon(name, height, width) {
+    getIcon(name, size) {
         var icon = this.icons.find((icon) => 'name' in icon ? icon.name == name : false);
         if (icon) {
-            return 'svg' in icon ? icon.svg : false;
+            let svg = ('svg' in icon ? icon.svg : '');
+            let svgElement = this.htmlStringToElement(svg);
+            if (size) {
+                svgElement.setAttribute('height', size + 'px');
+                svgElement.setAttribute('width', size + 'px');
+            }
+            return svgElement;
         }
         return false;
+    }
+    htmlStringToElement(html) {
+        const template = document.createElement('template');
+        template.innerHTML = html.trim();
+        return template.content.firstElementChild;
     }
 }
 //# sourceMappingURL=icons.js.map

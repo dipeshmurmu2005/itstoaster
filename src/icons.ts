@@ -23,11 +23,22 @@ export class Icons {
       }
     ]
   }
-  getIcon(name: string, height?: null, width?: null) {
+  getIcon(name: string, size?: number) {
     var icon = this.icons.find((icon) => 'name' in icon ? icon.name == name : false);
     if (icon) {
-      return 'svg' in icon ? icon.svg : false;
+      let svg = ('svg' in icon ? icon.svg : '') as string;
+      let svgElement = this.htmlStringToElement(svg);
+      if (size) {
+        svgElement.setAttribute('height', size + 'px');
+        svgElement.setAttribute('width', size + 'px');
+      }
+      return svgElement;
     }
     return false;
+  }
+  htmlStringToElement(html: string): HTMLElement {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    return template.content.firstElementChild as HTMLElement;
   }
 }

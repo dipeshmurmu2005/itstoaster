@@ -7,6 +7,12 @@
     position: fixed;
     height: 100vh;
     width: 100%;
+    top: 0%;
+    left: 0%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .toast-stack {
@@ -16,30 +22,39 @@
     gap: 10px;
     position: absolute;
     min-width: 300px;
+    pointer-events: all;
+    top: 20px;
 }
 
 .toast-stack.top-right {
-    top: 10px;
     right: 10px;
 }
 
 .toast-stack.top-left {
-    top: 10px;
     left: 10px;
     height: 100px;
 }
 
+.toast-stack.bottom-right {
+    right: 10px;
+    top: auto !important;
+    bottom: 20px;
+    border:1px solid red;
+}
+
 toast {
     height: fit-content;
-    min-width: 280px;
+    width: auto;
     padding: 10px 10px 10px 10px;
     border-radius: 5px;
     background-color: white;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
     gap: 5px;
     transform: translateY(0);
     transition-duration: 0.3s;
     cursor: pointer;
+    animation: fadeindown 0.5s;
+    pointer-events: all;
 }
 
 toast .content {
@@ -55,7 +70,7 @@ toast .icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: green;
+    margin-right: 10px;
 }
 
 toast .dismiss-btn {
@@ -81,4 +96,28 @@ h2 {
 p {
     font-size: 0.875rem;
     color: gray;
+}
+
+@keyframes fadeindown {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.toast-removing {
+    animation: fadeOut 0.3s ease-in-out;
 }
