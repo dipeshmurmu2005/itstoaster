@@ -1,13 +1,19 @@
 import { Icons } from "./icons.js";
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
+const defaultOptions = {
+    containerId: 'itstoaster-container',
+    stackSize: 3,
+};
 export class Toaster {
-    constructor(containerId = 'itstoaster-container') {
+    constructor(options = {}) {
+        this.options = Object.assign(Object.assign({}, defaultOptions), options);
         this.container = null;
-        this.containerId = containerId;
+        this.stackSize = this.options.stackSize;
+        this.containerId = this.options.containerId;
         this.iconFinder = new Icons();
         this.positions = ['top-left', 'top-center', 'top-right'];
-        this.createNotificationSection(containerId);
+        this.createNotificationSection(this.containerId);
         this.attachListeners();
     }
     createNotificationSection(containerId) {
@@ -27,11 +33,12 @@ export class Toaster {
             dismissable: false,
             title: 'Toaster Integrated Successfully',
             description: 'Enjoy using toaster',
+            duration: 3000,
             icon: {
                 name: 'check_circle',
                 size: 30,
                 color: '#000000',
-            }
+            },
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
         if (this.positions.find((position) => position == finalInfo.position)) {
@@ -82,18 +89,24 @@ export class Toaster {
             });
         }
         toast.appendChild(contentWrapper);
-        // remove more than 3 toast from stack
         var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
-        if (stackElements.length > 2) {
-            stackElements.forEach((element, index) => {
-                if (index < 1) {
-                    // element.remove();
-                }
-            });
+        this.stackSize = this.stackSize < 2 ? 2 : this.stackSize;
+        if (stackElements.length >= this.stackSize) {
+            stackElements[0].remove();
         }
         var stack = $('#' + this.containerId + ' ' + '.' + info.position);
         if (stack) {
             stack.appendChild(toast);
+        }
+        //    if duration
+        if (info.duration != false) {
+            var timer = info.duration == true ? 3000 : info.duration;
+            setTimeout(() => {
+                toast.classList.add('toast-removing');
+                toast.addEventListener('animationend', () => {
+                    toast.remove();
+                });
+            }, timer);
         }
         var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
         this.styleStack(stackElements, (_f = info.position) !== null && _f !== void 0 ? _f : null);

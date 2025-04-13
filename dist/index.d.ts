@@ -9,13 +9,20 @@ type ToastInfo = {
     position?: string | null;
     dismissable?: boolean;
     icon?: Icon;
+    duration?: number | boolean;
+};
+type Constructor = {
+    containerId: string;
+    stackSize: number;
 };
 export declare class Toaster {
     private container;
     private positions;
     private iconFinder;
     private containerId;
-    constructor(containerId?: string);
+    private stackSize;
+    private options;
+    constructor(options?: Partial<Constructor>);
     createNotificationSection(containerId: string): void;
     success(info?: ToastInfo): void;
     createToast(info: ToastInfo): void;
