@@ -11,6 +11,12 @@
 npm install itstoaster
 ```
 
+or
+
+```bash
+yarn add itstoaster
+```
+
 ---
 
 ## 🛠️ Usage
@@ -40,6 +46,30 @@ toast.success({
   duration: 3000, // optional (default: 3000ms)
   dismissable: true, // optional
   position: "top-right" // optional: top-left, top-center, top-right
+});
+
+toast.warning({
+  title: "Warning!",
+  description: "Your action might have unintended consequences.",
+  duration: 5000, // optional
+  dismissable: false, // optional
+  position: "top-center" // optional
+});
+
+toast.error({
+  title: "Error!",
+  description: "Something went wrong.",
+  duration: 4000, // optional
+  dismissable: true, // optional
+  position: "top-left" // optional
+});
+
+toast.info({
+  title: "Information",
+  description: "This is some informational text.",
+  duration: 4000, // optional
+  dismissable: true, // optional
+  position: "top-left" // optional
 });
 ```
 
