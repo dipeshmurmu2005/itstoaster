@@ -152,3 +152,15 @@ html[theme='dark'] toast {
     border: 1px solid #222226;
     color: white;
 }
+
+@media screen and (max-width:700px) {
+    .toast-stack {
+        width: auto;
+        top:5px;
+    }
+
+    .toast-stack.top-right {
+        right: 5px;
+        left: 5px;
+    }
+}
