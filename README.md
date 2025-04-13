@@ -77,14 +77,14 @@ toast.info({
 
 ## ⚙️ Toast Options
 
-| Option        | Type              | Default      | Description |
-|---------------|-------------------|--------------|-------------|
-| `title`       | `string \| null`  | `null`       | Optional title text |
-| `description` | `string \| null`  | `null`       | Optional description |
-| `duration`    | `number \| false` | `3000`       | How long toast stays (in ms). Use `false` to disable auto-dismiss |
-| `dismissable` | `boolean`         | `false`      | Show a close button |
-| `position`    | `string`          | `top-right`  | One of: `top-left`, `top-center`, `top-right` |
-| `icon`        | `string`          | Based on type | Override the default icon (see below) |
+| Option        | Type              | Default       | Description                                                       |
+| ------------- | ----------------- | ------------- | ----------------------------------------------------------------- |
+| `title`       | `string \| null`  | `null`        | Optional title text                                               |
+| `description` | `string \| null`  | `null`        | Optional description                                              |
+| `duration`    | `number \| false` | `3000`        | How long toast stays (in ms). Use `false` to disable auto-dismiss |
+| `dismissable` | `boolean`         | `false`       | Show a close button                                               |
+| `position`    | `string`          | `top-right`   | One of: `top-left`, `top-center`, `top-right`                     |
+| `icon`        | `string`          | Based on type | Override the default icon (see below)                             |
 
 ---
 
@@ -101,13 +101,13 @@ toast.info({
 
 ## 🌟 Default Icons
 
-| Type     | Icon name           |
-|----------|---------------------|
-| success  | `check_circle`       |
-| warning  | `exclamation_circle` |
-| error    | `triangular_error`   |
-| info     | `info_circle`        |
-| close    | `cross`              |
+| Type    | Icon name            |
+| ------- | -------------------- |
+| success | `check_circle`       |
+| warning | `exclamation_circle` |
+| error   | `triangular_error`   |
+| info    | `info_circle`        |
+| close   | `cross`              |
 
 ✅ You can **override any icon** by passing a custom icon name in the `icon` option.
 
@@ -127,10 +127,10 @@ Toasts can be positioned at:
 
 When creating a new `Toaster` instance, you can pass these options:
 
-| Option       | Type     | Description |
-|--------------|----------|-------------|
+| Option        | Type     | Description                                        |
+| ------------- | -------- | -------------------------------------------------- |
 | `containerId` | `string` | Optional ID to use for the toast container element |
-| `stack`       | `number` | Max number of toasts shown at once (default: unlimited) |
+| `stack`       | `number` | Max number of toasts shown at once (default: 3)    |
 
 ---
 
