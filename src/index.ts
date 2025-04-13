@@ -42,7 +42,7 @@ export class Toaster {
         this.stackSize = this.options.stackSize;
         this.containerId = this.options.containerId;
         this.iconFinder = new Icons();
-        this.positions = ['top-left', 'top-center', 'top-right']
+        this.positions = ['top-left', 'top-center', 'top-right', 'bottom-right', 'bottom-left', 'bottom-center']
         this.createNotificationSection(this.containerId);
         this.attachListeners();
     }
@@ -216,11 +216,13 @@ export class Toaster {
         if (elements.length > 1) {
             elements.forEach((toast, index) => {
                 if (elements.length != index + 1) {
+                    (toast as HTMLElement).style.position = "absolute";
+                    var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
                     if (position == 'top-right' || position == 'top-center' || position == 'top-left') {
-                        var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
-                        (toast as HTMLElement).style.position = "absolute";
                         (toast as HTMLElement).style.transform =
                             `scale(${scaleValue}) translateY(${((elements.length - (index + 1)) * 10) + scaleValue}px)`;
+                    } else {
+                        (toast as HTMLElement).style.transform = `scale(${scaleValue}) translateY(-${((elements.length - (index + 1)) * 10) + scaleValue}px)`
                     }
                 }
             })
@@ -237,7 +239,11 @@ export class Toaster {
                 stackElements.forEach((toast, toastIndex) => {
                     var position = toast.parentElement?.getAttribute('position');
                     const stackDimension = getY(stackElements, toastIndex);
-                    toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                    if (position != 'bottom-right' && position != 'bottom-left' && position != 'bottom-center') {
+                        toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                    } else {
+                        toast.style.transform = `scale(1) translateY(-${stackDimension.yValue}px)`;
+                    }
                     (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
                 })
             })
@@ -248,7 +254,9 @@ export class Toaster {
                 var position = stack.getAttribute('position');
                 var toasts = stack.querySelectorAll('toast');
                 this.styleStack(stack.querySelectorAll('toast'), stack.getAttribute('position') ?? null);
-                (stack as HTMLDivElement).style.height = 'fit-content';
+                if (position != 'bottom-right' && position != 'bottom-left' && position != 'bottom-center') {
+                    (stack as HTMLDivElement).style.height = 'fit-content';
+                }
             })
         });
 

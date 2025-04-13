@@ -41,6 +41,28 @@
     right: 10px;
     top: auto !important;
     bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+
+.toast-stack.bottom-left {
+    left: 10px;
+    top: auto !important;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.toast-stack.bottom-center {
+    top: auto !important;
+    bottom: 20px;
+    display: flex;
+    min-width: 400px;
+    flex-direction: column;
+    justify-content: end;
 }
 
 toast {
@@ -156,7 +178,7 @@ html[theme='dark'] toast {
 @media screen and (max-width:700px) {
     .toast-stack {
         width: auto;
-        top:5px;
+        top: 5px;
     }
 
     .toast-stack.top-right {
