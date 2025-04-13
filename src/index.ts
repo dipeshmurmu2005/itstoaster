@@ -61,8 +61,8 @@ export class Toaster {
         const defaultInfo: ToastInfo = {
             position: 'top-right',
             dismissable: false,
-            title: 'Toaster Integrated Successfully',
-            description: 'Enjoy using toaster',
+            title: 'Boom. Nailed it',
+            description: 'You just leveled up your workflow.',
             duration: 3000,
             icon: {
                 name: 'check_circle',
@@ -75,6 +75,63 @@ export class Toaster {
             this.createToast(finalInfo);
         }
     }
+    warning(info: ToastInfo = {}) {
+        const defaultInfo: ToastInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: "Warning Issued",
+            description: 'It’s not broken, but it’s definitely twitchy.',
+            duration: 3000,
+            icon: {
+                name: 'exclamation_circle',
+                size: 30,
+                color: '#000000',
+            },
+        }
+        const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
+    }
+
+    error(info: ToastInfo = {}) {
+        const defaultInfo: ToastInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: "Crash Landing",
+            description: 'That didn’t go as expected. Let’s debug',
+            duration: 3000,
+            icon: {
+                name: 'triangular_error',
+                size: 30,
+                color: '#000000',
+            },
+        }
+        const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
+    }
+
+    info(info: ToastInfo = {}) {
+        const defaultInfo: ToastInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: "Ping from the System",
+            description: 'Nothing’s broken. Just keeping you informed',
+            duration: 3000,
+            icon: {
+                name: 'info_circle',
+                size: 30,
+                color: '#000000',
+            },
+        }
+        const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
+    }
+
 
     createToast(info: ToastInfo) {
         var toast = document.createElement('toast');

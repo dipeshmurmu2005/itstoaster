@@ -31,11 +31,65 @@ export class Toaster {
         const defaultInfo = {
             position: 'top-right',
             dismissable: false,
-            title: 'Toaster Integrated Successfully',
-            description: 'Enjoy using toaster',
+            title: 'Boom. Nailed it',
+            description: 'You just leveled up your workflow.',
             duration: 3000,
             icon: {
                 name: 'check_circle',
+                size: 30,
+                color: '#000000',
+            },
+        };
+        const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
+    }
+    warning(info = {}) {
+        const defaultInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: "Warning Issued",
+            description: 'It’s not broken, but it’s definitely twitchy.',
+            duration: 3000,
+            icon: {
+                name: 'exclamation_circle',
+                size: 30,
+                color: '#000000',
+            },
+        };
+        const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
+    }
+    error(info = {}) {
+        const defaultInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: "Crash Landing",
+            description: 'That didn’t go as expected. Let’s debug',
+            duration: 3000,
+            icon: {
+                name: 'triangular_error',
+                size: 30,
+                color: '#000000',
+            },
+        };
+        const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
+        if (this.positions.find((position) => position == finalInfo.position)) {
+            this.createToast(finalInfo);
+        }
+    }
+    info(info = {}) {
+        const defaultInfo = {
+            position: 'top-right',
+            dismissable: false,
+            title: "Ping from the System",
+            description: 'Nothing’s broken. Just keeping you informed',
+            duration: 3000,
+            icon: {
+                name: 'info_circle',
                 size: 30,
                 color: '#000000',
             },

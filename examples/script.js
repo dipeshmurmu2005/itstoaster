@@ -1,19 +1,12 @@
 import { Toaster } from '../dist/index.js';
-const options = {
-    stackSize: 1,
-}
+const options = {}
 const toast = new Toaster(options);
 function showToast(index) {
-    toast.success({
-        title: 'Successfully Created' + index,
-        description: 'You can now create your sales',
-        dismissable: true,
-        duration: 5000,
-        position: 'top-right',
-        icon: {
-            color: '#f30020'
+    toast.info({
+        icon:{
+            color:'#4BB543'
         }
-    })
+    });
 }
 let index = 0;
 

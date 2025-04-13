@@ -25,6 +25,9 @@ export declare class Toaster {
     constructor(options?: Partial<Constructor>);
     createNotificationSection(containerId: string): void;
     success(info?: ToastInfo): void;
+    warning(info?: ToastInfo): void;
+    error(info?: ToastInfo): void;
+    info(info?: ToastInfo): void;
     createToast(info: ToastInfo): void;
     styleStack(elements: NodeList, position: string | null): void;
     attachListeners(): void;
