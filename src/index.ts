@@ -67,7 +67,7 @@ export class Toaster {
             icon: {
                 name: 'check_circle',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         }
         const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
@@ -85,7 +85,7 @@ export class Toaster {
             icon: {
                 name: 'exclamation_circle',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         }
         const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
@@ -104,7 +104,7 @@ export class Toaster {
             icon: {
                 name: 'triangular_error',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         }
         const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
@@ -123,7 +123,7 @@ export class Toaster {
             icon: {
                 name: 'info_circle',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         }
         const finalInfo = { ...defaultInfo, ...info, icon: { ...defaultInfo.icon, ...info.icon } };
@@ -135,14 +135,16 @@ export class Toaster {
 
     createToast(info: ToastInfo) {
         var toast = document.createElement('toast');
-        toast.setAttribute('class', `success-toast toast-${info.position}`);
+        toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
         var toastContent = document.createElement('div');
         toastContent.setAttribute('class', 'content');
 
         // icon
         var icon = document.createElement('div');
         icon.setAttribute('class', 'icon');
-        icon.style.color = info.icon?.color ?? '#000000';
+        if (info.icon?.color) {
+            icon.style.color = info.icon.color;
+        }
         var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
         if (iconSvg) {
             icon.appendChild(iconSvg)

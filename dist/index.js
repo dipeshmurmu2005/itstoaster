@@ -37,7 +37,7 @@ export class Toaster {
             icon: {
                 name: 'check_circle',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
@@ -55,7 +55,7 @@ export class Toaster {
             icon: {
                 name: 'exclamation_circle',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
@@ -73,7 +73,7 @@ export class Toaster {
             icon: {
                 name: 'triangular_error',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
@@ -91,7 +91,7 @@ export class Toaster {
             icon: {
                 name: 'info_circle',
                 size: 30,
-                color: '#000000',
+                color: undefined,
             },
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
@@ -100,16 +100,18 @@ export class Toaster {
         }
     }
     createToast(info) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e;
         var toast = document.createElement('toast');
-        toast.setAttribute('class', `success-toast toast-${info.position}`);
+        toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
         var toastContent = document.createElement('div');
         toastContent.setAttribute('class', 'content');
         // icon
         var icon = document.createElement('div');
         icon.setAttribute('class', 'icon');
-        icon.style.color = (_b = (_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) !== null && _b !== void 0 ? _b : '#000000';
-        var iconSvg = this.iconFinder.getIcon((_d = (_c = info.icon) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : '', (_e = info.icon) === null || _e === void 0 ? void 0 : _e.size);
+        if ((_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) {
+            icon.style.color = info.icon.color;
+        }
+        var iconSvg = this.iconFinder.getIcon((_c = (_b = info.icon) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '', (_d = info.icon) === null || _d === void 0 ? void 0 : _d.size);
         if (iconSvg) {
             icon.appendChild(iconSvg);
         }
@@ -163,7 +165,7 @@ export class Toaster {
             }, timer);
         }
         var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
-        this.styleStack(stackElements, (_f = info.position) !== null && _f !== void 0 ? _f : null);
+        this.styleStack(stackElements, (_e = info.position) !== null && _e !== void 0 ? _e : null);
     }
     styleStack(elements, position) {
         if (elements.length > 1) {

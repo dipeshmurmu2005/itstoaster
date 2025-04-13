@@ -41,7 +41,6 @@
     right: 10px;
     top: auto !important;
     bottom: 20px;
-    border: 1px solid red;
 }
 
 toast {
@@ -132,4 +131,24 @@ p {
 
 .toast-removing {
     animation: fadeOut 0.3s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+    toast {
+        background-color: #08090a;
+        border: 1px solid #222226;
+        color: white;
+    }
+}
+
+html[data-theme='dark'] toast {
+    background-color: #08090a;
+    border: 1px solid #222226;
+    color: white;
+}
+
+html[theme='dark'] toast {
+    background-color: #08090a;
+    border: 1px solid #222226;
+    color: white;
 }

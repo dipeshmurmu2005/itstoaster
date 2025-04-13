@@ -3,9 +3,7 @@ const options = {}
 const toast = new Toaster(options);
 function showToast(index) {
     toast.info({
-        icon:{
-            color:'#4BB543'
-        }
+        duration: false,
     });
 }
 let index = 0;
