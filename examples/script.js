@@ -1,9 +1,9 @@
 import { Toaster } from '../dist/index.js';
-const options = {}
-const toast = new Toaster(options);
+const toast = new Toaster();
 function showToast(index) {
     toast.info({
-        duration: false,
+        duration: 8000,
+        // showProgress: false,
     });
 }
 let index = 0;

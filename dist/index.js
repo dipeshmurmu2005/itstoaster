@@ -34,6 +34,7 @@ export class Toaster {
             title: 'Boom. Nailed it',
             description: 'You just leveled up your workflow.',
             duration: 3000,
+            showProgress: true,
             icon: {
                 name: 'check_circle',
                 size: 30,
@@ -52,6 +53,7 @@ export class Toaster {
             title: "Warning Issued",
             description: 'It’s not broken, but it’s definitely twitchy.',
             duration: 3000,
+            showProgress: true,
             icon: {
                 name: 'exclamation_circle',
                 size: 30,
@@ -70,6 +72,7 @@ export class Toaster {
             title: "Crash Landing",
             description: 'That didn’t go as expected. Let’s debug',
             duration: 3000,
+            showProgress: true,
             icon: {
                 name: 'triangular_error',
                 size: 30,
@@ -88,6 +91,7 @@ export class Toaster {
             title: "Ping from the System",
             description: 'Nothing’s broken. Just keeping you informed',
             duration: 3000,
+            showProgress: true,
             icon: {
                 name: 'info_circle',
                 size: 30,
@@ -145,6 +149,11 @@ export class Toaster {
             });
         }
         toast.appendChild(contentWrapper);
+        //    if duration
+        if (info.duration != false) {
+            var timer = info.duration == true ? 3000 : info.duration;
+            this.durationController(toast, timer !== null && timer !== void 0 ? timer : 3000, info.showProgress);
+        }
         var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
         this.stackSize = this.stackSize < 2 ? 2 : this.stackSize;
         if (stackElements.length >= this.stackSize) {
@@ -154,18 +163,65 @@ export class Toaster {
         if (stack) {
             stack.appendChild(toast);
         }
-        //    if duration
-        if (info.duration != false) {
-            var timer = info.duration == true ? 3000 : info.duration;
-            setTimeout(() => {
+        var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
+        this.styleStack(stackElements, (_e = info.position) !== null && _e !== void 0 ? _e : null);
+    }
+    durationController(toast, timer, showProgress) {
+        if (showProgress) {
+            // Create progress bar structure
+            var progressBar = document.createElement('div');
+            progressBar.setAttribute('class', 'duration-progress');
+            var progress = document.createElement('div');
+            progress.setAttribute('class', 'progress');
+            progressBar.appendChild(progress);
+            toast.appendChild(progressBar);
+        }
+        // Duration logic
+        var startTime = Date.now();
+        var remainingTime = timer;
+        var elapsedTime = 0;
+        var toastDurationId = Date.now();
+        var isStop = false;
+        function startDuration() {
+            startTime = Date.now();
+            if (showProgress) {
+                // Reset width to current state before animating
+                requestAnimationFrame(() => {
+                    progress.style.transition = 'none'; // Remove previous transition
+                    progress.style.transition = `width ${remainingTime}ms linear`;
+                    progress.style.width = '0%';
+                });
+            }
+            // Set timeout to remove toast
+            toastDurationId = setTimeout(() => {
                 toast.classList.add('toast-removing');
                 toast.addEventListener('animationend', () => {
                     toast.remove();
                 });
-            }, timer);
+            }, remainingTime);
         }
-        var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
-        this.styleStack(stackElements, (_e = info.position) !== null && _e !== void 0 ? _e : null);
+        // Pause on hover
+        toast.addEventListener('mouseover', () => {
+            if (!isStop) {
+                clearTimeout(toastDurationId);
+                elapsedTime = Date.now() - startTime;
+                remainingTime = remainingTime - elapsedTime;
+                if (showProgress) {
+                    const computedStyle = window.getComputedStyle(progress);
+                    const currentWidth = computedStyle.width;
+                    progress.style.transition = 'none';
+                    progress.style.width = currentWidth;
+                }
+            }
+            isStop = true;
+        });
+        // Resume on mouse leave
+        toast.addEventListener('mouseleave', () => {
+            isStop = false;
+            startDuration();
+        });
+        // Start the duration initially
+        startDuration();
     }
     styleStack(elements, position) {
         if (elements.length > 1) {

@@ -23,7 +23,7 @@
     align-items: center;
     gap: 10px;
     position: absolute;
-    min-width: 300px;
+    min-width: 350px;
     pointer-events: all;
     top: 20px;
 }
@@ -45,7 +45,7 @@
 
 toast {
     height: fit-content;
-    width: auto;
+    width: fit-content;
     padding: 10px 15px 10px 10px;
     border-radius: 5px;
     background-color: white;
@@ -139,28 +139,46 @@ p {
         border: 1px solid #222226;
         color: white;
     }
+
+    toast .duration-progress .progress {
+        background: linear-gradient(to right, white, gray);
+    }
 }
 
-html[data-theme='dark'] toast {
-    background-color: #08090a;
-    border: 1px solid #222226;
-    color: white;
-}
-
+html[data-theme='dark'] toast,
 html[theme='dark'] toast {
     background-color: #08090a;
     border: 1px solid #222226;
     color: white;
 }
 
+html[data-theme='dark'] toast .duration-progress .progress,
+html[theme='dark'] toast .duration-progress .progress {
+    background: linear-gradient(to right, white, gray);
+}
+
 @media screen and (max-width:700px) {
     .toast-stack {
         width: auto;
-        top:5px;
+        top: 5px;
     }
 
     .toast-stack.top-right {
         right: 5px;
         left: 5px;
     }
+}
+
+toast .duration-progress {
+    height: 4px;
+    width: 100%;
+    border: 1px solid #222226;
+    margin-top: 5px;
+    border-radius: 1.2px;
+}
+
+toast .duration-progress .progress {
+    height: 100%;
+    width: 100%;
+    background-color:#222226;
 }

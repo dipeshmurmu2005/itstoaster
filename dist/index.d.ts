@@ -10,6 +10,7 @@ type ToastInfo = {
     dismissable?: boolean;
     icon?: Icon;
     duration?: number | boolean;
+    showProgress?: boolean;
 };
 type Constructor = {
     containerId: string;
@@ -29,6 +30,7 @@ export declare class Toaster {
     error(info?: ToastInfo): void;
     info(info?: ToastInfo): void;
     createToast(info: ToastInfo): void;
+    durationController(toast: HTMLElement, timer: number, showProgress: boolean | undefined): void;
     styleStack(elements: NodeList, position: string | null): void;
     attachListeners(): void;
 }
