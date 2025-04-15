@@ -4,6 +4,7 @@ const toast = new Toaster(options);
 function showToast(index) {
     toast.info({
         duration: false,
+        dismissable: true,
     });
 }
 let index = 0;
