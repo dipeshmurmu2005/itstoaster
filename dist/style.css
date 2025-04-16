@@ -1,15 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-#itstoaster-container {
-    position: fixed;
-    height: 100vh;
+body {
     width: 100%;
-    top: 0%;
-    left: 0%;
-    pointer-events: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .toast-stack {
@@ -19,8 +11,8 @@
     min-width: 400px;
     gap: 10px;
     position: absolute;
-    pointer-events: all;
     top: 20px;
+    transition-duration: 0.3s;
 }
 
 .toast-stack.top-right {
@@ -29,7 +21,15 @@
 
 .toast-stack.top-left {
     left: 10px;
-    height: 100px;
+}
+
+.toast-stack.top-center {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    border-radius: 8px;
 }
 
 .toast-stack.bottom-right {
@@ -50,7 +50,6 @@ toast {
     transition-duration: 0.3s;
     cursor: pointer;
     animation: fadeindown 0.5s;
-    pointer-events: all;
     border: 1px solid rgb(208, 208, 208);
 }
 

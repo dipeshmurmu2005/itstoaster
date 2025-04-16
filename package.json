@@ -1,6 +1,7 @@
 {
   "name": "itstoaster",
-  "version": "1.0.2",
+  "homepage": "https://dipeshmurmu.com.np/itstoaster",
+  "version": "1.0.3",
   "description": "A lightweight toast notification package for JavaScript",
   "keywords": [
     "toast",

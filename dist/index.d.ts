@@ -29,7 +29,7 @@ export declare class Toaster {
     error(info?: ToastInfo): void;
     info(info?: ToastInfo): void;
     createToast(info: ToastInfo): void;
-    styleStack(elements: NodeList, position: string | null): void;
+    styleStack(elements: HTMLDivElement[] | NodeList, position: string | null, reStack?: boolean): void;
     attachListeners(): void;
 }
 export {};

@@ -47,15 +47,12 @@ export class Toaster {
         this.attachListeners();
     }
     createNotificationSection(containerId: string) {
-        var itstoasterContainer = document.createElement('div');
-        itstoasterContainer.setAttribute('id', containerId);
         this.positions.forEach(position => {
             var toastStack = document.createElement('div');
             toastStack.setAttribute('class', `toast-stack ${position}`);
             toastStack.setAttribute('position', position);
-            itstoasterContainer.appendChild(toastStack);
+            document.body.appendChild(toastStack);
         })
-        document.body.appendChild(itstoasterContainer);
     }
     success(info: ToastInfo = {}) {
         const defaultInfo: ToastInfo = {
@@ -184,13 +181,13 @@ export class Toaster {
 
         toast.appendChild(contentWrapper);
 
-        var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
+        var stackElements = $$('.' + 'toast-' + info.position);
         this.stackSize = this.stackSize < 2 ? 2 : this.stackSize
         if (stackElements.length >= this.stackSize) {
             stackElements[0].remove();
         }
 
-        var stack = $('#' + this.containerId + ' ' + '.' + info.position)
+        var stack = $('.' + info.position)
         if (stack) {
             stack.appendChild(toast);
         }
@@ -206,24 +203,33 @@ export class Toaster {
             }, timer);
         }
 
-        var stackElements = $$('#' + this.containerId + ' ' + '.' + 'toast-' + info.position);
+        var stackElements = $$('.' + 'toast-' + info.position);
         this.styleStack(stackElements, info.position ?? null);
     }
 
 
 
-    styleStack(elements: NodeList, position: string | null) {
+    styleStack(elements: HTMLDivElement[] | NodeList, position: string | null, reStack: boolean = false) {
         if (elements.length > 1) {
             elements.forEach((toast, index) => {
-                if (elements.length != index + 1) {
-                    if (position == 'top-right' || position == 'top-center' || position == 'top-left') {
-                        var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
-                        (toast as HTMLElement).style.position = "absolute";
-                        (toast as HTMLElement).style.transform =
-                            `scale(${scaleValue}) translateY(${((elements.length - (index + 1)) * 10) + scaleValue}px)`;
+                if (!reStack) {
+                    if (elements.length != index + 1) {
+                        applyStyle(toast, index);
                     }
+                } else {
+                    applyStyle(toast, index);
                 }
             })
+
+        }
+
+        function applyStyle(toast: Node | HTMLDivElement, index: number) {
+            if (position == 'top-right' || position == 'top-center' || position == 'top-left') {
+                var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
+                (toast as HTMLElement).style.position = "absolute";
+                (toast as HTMLElement).style.transform =
+                    `scale(${scaleValue}) translateY(${((elements.length - (index + 1)) * 10) + scaleValue}px)`;
+            }
         }
     }
     attachListeners() {
@@ -247,8 +253,17 @@ export class Toaster {
             stack.addEventListener('mouseleave', () => {
                 var position = stack.getAttribute('position');
                 var toasts = stack.querySelectorAll('toast');
-                this.styleStack(stack.querySelectorAll('toast'), stack.getAttribute('position') ?? null);
-                (stack as HTMLDivElement).style.height = 'fit-content';
+                var newToasts = (Array.from(toasts).filter((toast) => {
+                    return !toast.classList.contains('toast-removing');
+                })) as HTMLDivElement[];
+                if (newToasts.length == 1) {
+                    var height = toasts[0].getBoundingClientRect().height + 'px';
+                    newToasts[0].style.transform = `scale(1)`;
+                    (stack as HTMLDivElement).style.height = toasts[0].getBoundingClientRect().height + 'px';
+                } else {
+                    this.styleStack(newToasts, stack.getAttribute('position') ?? null, true);
+                    (stack as HTMLDivElement).style.height = 'fit-content';
+                }
             })
         });
 
