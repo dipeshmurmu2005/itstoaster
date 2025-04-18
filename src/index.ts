@@ -236,36 +236,50 @@ export class Toaster {
         var toastStacks = $$('.toast-stack');
         toastStacks.forEach(stack => {
             stack.addEventListener('mouseenter', () => {
-                var stackElements = Array.from(
-                    stack.querySelectorAll('toast') ?? []
-                ) as HTMLDivElement[];
-
-                stackElements.forEach((toast, toastIndex) => {
-                    var position = toast.parentElement?.getAttribute('position');
-                    const stackDimension = getY(stackElements, toastIndex);
-                    toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
-                    (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
-                })
+                listStack(stack);
+            })
+            stack.addEventListener('touchstart', () => {
+                listStack(stack);
             })
         })
 
+        function listStack(stack: Element) {
+            var stackElements = Array.from(
+                stack.querySelectorAll('toast') ?? []
+            ) as HTMLDivElement[];
+
+            stackElements.forEach((toast, toastIndex) => {
+                var position = toast.parentElement?.getAttribute('position');
+                const stackDimension = getY(stackElements, toastIndex);
+                toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
+            })
+        }
+
         toastStacks.forEach(stack => {
             stack.addEventListener('mouseleave', () => {
-                var position = stack.getAttribute('position');
-                var toasts = stack.querySelectorAll('toast');
-                var newToasts = (Array.from(toasts).filter((toast) => {
-                    return !toast.classList.contains('toast-removing');
-                })) as HTMLDivElement[];
-                if (newToasts.length == 1) {
-                    var height = toasts[0].getBoundingClientRect().height + 'px';
-                    newToasts[0].style.transform = `scale(1)`;
-                    (stack as HTMLDivElement).style.height = toasts[0].getBoundingClientRect().height + 'px';
-                } else {
-                    this.styleStack(newToasts, stack.getAttribute('position') ?? null, true);
-                    (stack as HTMLDivElement).style.height = 'fit-content';
-                }
+                reformStack(stack);
+            })
+            stack.addEventListener('touchend', () => {
+                reformStack(stack);
             })
         });
+
+        const reformStack = (stack: Element) => {
+            var position = stack.getAttribute('position');
+            var toasts = stack.querySelectorAll('toast');
+            var newToasts = (Array.from(toasts).filter((toast) => {
+                return !toast.classList.contains('toast-removing');
+            })) as HTMLDivElement[];
+            if (newToasts.length == 1) {
+                var height = toasts[0].getBoundingClientRect().height + 'px';
+                newToasts[0].style.transform = `scale(1)`;
+                (stack as HTMLDivElement).style.height = toasts[0].getBoundingClientRect().height + 'px';
+            } else {
+                this.styleStack(newToasts, stack.getAttribute('position') ?? null, true);
+                (stack as HTMLDivElement).style.height = 'fit-content';
+            }
+        }
 
         function getY(stack: HTMLDivElement[], toastIndex: number) {
             var yValue = 0;

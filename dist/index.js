@@ -190,36 +190,48 @@ export class Toaster {
         var toastStacks = $$('.toast-stack');
         toastStacks.forEach(stack => {
             stack.addEventListener('mouseenter', () => {
-                var _a;
-                var stackElements = Array.from((_a = stack.querySelectorAll('toast')) !== null && _a !== void 0 ? _a : []);
-                stackElements.forEach((toast, toastIndex) => {
-                    var _a;
-                    var position = (_a = toast.parentElement) === null || _a === void 0 ? void 0 : _a.getAttribute('position');
-                    const stackDimension = getY(stackElements, toastIndex);
-                    toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
-                    stack.style.height = stackDimension.height + 'px';
-                });
+                listStack(stack);
+            });
+            stack.addEventListener('touchstart', () => {
+                listStack(stack);
             });
         });
+        function listStack(stack) {
+            var _a;
+            var stackElements = Array.from((_a = stack.querySelectorAll('toast')) !== null && _a !== void 0 ? _a : []);
+            stackElements.forEach((toast, toastIndex) => {
+                var _a;
+                var position = (_a = toast.parentElement) === null || _a === void 0 ? void 0 : _a.getAttribute('position');
+                const stackDimension = getY(stackElements, toastIndex);
+                toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                stack.style.height = stackDimension.height + 'px';
+            });
+        }
         toastStacks.forEach(stack => {
             stack.addEventListener('mouseleave', () => {
-                var _a;
-                var position = stack.getAttribute('position');
-                var toasts = stack.querySelectorAll('toast');
-                var newToasts = (Array.from(toasts).filter((toast) => {
-                    return !toast.classList.contains('toast-removing');
-                }));
-                if (newToasts.length == 1) {
-                    var height = toasts[0].getBoundingClientRect().height + 'px';
-                    newToasts[0].style.transform = `scale(1)`;
-                    stack.style.height = toasts[0].getBoundingClientRect().height + 'px';
-                }
-                else {
-                    this.styleStack(newToasts, (_a = stack.getAttribute('position')) !== null && _a !== void 0 ? _a : null, true);
-                    stack.style.height = 'fit-content';
-                }
+                reformStack(stack);
+            });
+            stack.addEventListener('touchend', () => {
+                reformStack(stack);
             });
         });
+        const reformStack = (stack) => {
+            var _a;
+            var position = stack.getAttribute('position');
+            var toasts = stack.querySelectorAll('toast');
+            var newToasts = (Array.from(toasts).filter((toast) => {
+                return !toast.classList.contains('toast-removing');
+            }));
+            if (newToasts.length == 1) {
+                var height = toasts[0].getBoundingClientRect().height + 'px';
+                newToasts[0].style.transform = `scale(1)`;
+                stack.style.height = toasts[0].getBoundingClientRect().height + 'px';
+            }
+            else {
+                this.styleStack(newToasts, (_a = stack.getAttribute('position')) !== null && _a !== void 0 ? _a : null, true);
+                stack.style.height = 'fit-content';
+            }
+        };
         function getY(stack, toastIndex) {
             var yValue = 0;
             var height = 0;
