@@ -28,6 +28,36 @@ const defaultOptions: Constructor = {
     stackSize: 3,
 }
 
+const moods = {
+    happy: '😊',
+    sad: '😞',
+    angry: '😡',
+    surprised: '😲',
+    excited: '😃',
+    confused: '😕',
+    hopeful: '🌟',
+    grateful: '🙏',
+    indifferent: '😐',
+    proud: '😌',
+    frustrated: '😣',
+    confident: '💪',
+    relieved: '😅',
+    anxious: '😟',
+    calm: '😌',
+    embarrassed: '😳',
+    nostalgic: '🕰️',
+    optimistic: '🌞'
+} as const;
+
+type moodyToast = {
+    title?: string;
+    description?: string;
+    position?: string | null;
+    dismissable?: boolean;
+    mood?: string;
+    duration?: number | boolean
+}
+
 
 export class Toaster {
     private container: HTMLElement | null;
@@ -130,7 +160,7 @@ export class Toaster {
     }
 
 
-    createToast(info: ToastInfo) {
+    createToast(info: ToastInfo, mood: string = '') {
         var toast = document.createElement('toast');
         toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
         var toastContent = document.createElement('div');
@@ -139,12 +169,18 @@ export class Toaster {
         // icon
         var icon = document.createElement('div');
         icon.setAttribute('class', 'icon');
-        if (info.icon?.color) {
-            icon.style.color = info.icon.color;
-        }
-        var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
-        if (iconSvg) {
-            icon.appendChild(iconSvg)
+
+        if (mood == '') {
+            if (info.icon?.color) {
+                icon.style.color = info.icon.color;
+            }
+            var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
+            if (iconSvg) {
+                icon.appendChild(iconSvg)
+            }
+        } else {
+            icon.setAttribute('class', 'icon mood');
+            icon.textContent = mood;
         }
 
         var contentWrapper = document.createElement('div');
@@ -296,6 +332,21 @@ export class Toaster {
                 yValue: yValue,
                 height: height
             };
+        }
+    }
+
+    getMoodEmoji(mood: string) {
+        // Type assertion for `mood` to ensure it's a valid key of `moods`
+        const moodKey = mood.toLowerCase() as keyof typeof moods;
+
+        if (moods[moodKey]) {
+            return moods[moodKey];
+        }
+    }
+    mood(mood: string, info: ToastInfo) {
+        mood = this.getMoodEmoji(mood) ?? '';
+        if (mood != '') {
+            this.createToast(info, mood);
         }
     }
 }

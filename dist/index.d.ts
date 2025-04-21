@@ -28,9 +28,11 @@ export declare class Toaster {
     warning(info?: ToastInfo): void;
     error(info?: ToastInfo): void;
     info(info?: ToastInfo): void;
-    createToast(info: ToastInfo): void;
+    createToast(info: ToastInfo, mood?: string): void;
     styleStack(elements: HTMLDivElement[] | NodeList, position: string | null, reStack?: boolean): void;
     attachListeners(): void;
+    getMoodEmoji(mood: string): "😊" | "😞" | "😡" | "😲" | "😃" | "😕" | "🌟" | "🙏" | "😐" | "😌" | "😣" | "💪" | "😅" | "😟" | "😳" | "🕰️" | "🌞" | undefined;
+    mood(mood: string, info: ToastInfo): void;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map

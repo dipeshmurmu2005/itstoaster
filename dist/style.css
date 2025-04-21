@@ -99,6 +99,10 @@ toast p {
     color: gray;
 }
 
+toast .mood {
+    font-size: 1.8rem;
+}
+
 @keyframes fadeindown {
     0% {
         transform: translateY(-100%);
@@ -151,6 +155,10 @@ html[data-theme='dark'] toast .dismiss-btn:hover,
     .toast-stack {
         width: auto;
         top: 5px;
+    }
+
+    toast .mood {
+        font-size: 1.6rem;
     }
 
     .toast-stack.top-right {
