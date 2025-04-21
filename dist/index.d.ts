@@ -9,11 +9,20 @@ type ToastInfo = {
     position?: string | null;
     dismissable?: boolean;
     icon?: Icon;
+    centered?: boolean;
     duration?: number | boolean;
 };
 type Constructor = {
     containerId: string;
     stackSize: number;
+};
+type HTMLToast = {
+    code: string;
+    icon?: Icon;
+    position?: string | null;
+    dismissable?: boolean;
+    duration?: number | boolean;
+    centered?: boolean;
 };
 export declare class Toaster {
     private container;
@@ -28,9 +37,10 @@ export declare class Toaster {
     warning(info?: ToastInfo): void;
     error(info?: ToastInfo): void;
     info(info?: ToastInfo): void;
-    createToast(info: ToastInfo): void;
+    createToast(info: ToastInfo | HTMLToast, customHTML?: boolean): void;
     styleStack(elements: HTMLDivElement[] | NodeList, position: string | null, reStack?: boolean): void;
     attachListeners(): void;
+    html(info: HTMLToast): void;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map

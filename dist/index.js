@@ -1,6 +1,23 @@
 import { Icons } from "./icons.js";
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
+const defaultHTMLToast = {
+    code: `
+    <div class="custom">
+        <h1>Want help setting up</h1>
+        <p>Please read the docs</p>
+    </div>
+    `,
+    icon: {
+        name: 'exclamation_circle',
+        color: '#000000',
+        size: 35,
+    },
+    position: 'top-right',
+    dismissable: true,
+    duration: 3000,
+    centered: false,
+};
 const defaultOptions = {
     containerId: 'itstoaster-container',
     stackSize: 3,
@@ -31,6 +48,7 @@ export class Toaster {
             title: 'Boom. Nailed it',
             description: 'You just leveled up your workflow.',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'check_circle',
                 size: 30,
@@ -49,6 +67,7 @@ export class Toaster {
             title: "Warning Issued",
             description: 'It’s not broken, but it’s definitely twitchy.',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'exclamation_circle',
                 size: 30,
@@ -67,6 +86,7 @@ export class Toaster {
             title: "Crash Landing",
             description: 'That didn’t go as expected. Let’s debug',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'triangular_error',
                 size: 30,
@@ -85,6 +105,7 @@ export class Toaster {
             title: "Ping from the System",
             description: 'Nothing’s broken. Just keeping you informed',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'info_circle',
                 size: 30,
@@ -96,34 +117,43 @@ export class Toaster {
             this.createToast(finalInfo);
         }
     }
-    createToast(info) {
+    createToast(info, customHTML = false) {
         var _a, _b, _c, _d, _e;
         var toast = document.createElement('toast');
         toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
-        var toastContent = document.createElement('div');
-        toastContent.setAttribute('class', 'content');
-        // icon
-        var icon = document.createElement('div');
-        icon.setAttribute('class', 'icon');
-        if ((_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) {
-            icon.style.color = info.icon.color;
-        }
-        var iconSvg = this.iconFinder.getIcon((_c = (_b = info.icon) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '', (_d = info.icon) === null || _d === void 0 ? void 0 : _d.size);
-        if (iconSvg) {
-            icon.appendChild(iconSvg);
-        }
         var contentWrapper = document.createElement('div');
         contentWrapper.setAttribute('class', 'content');
+        if (info.centered || (!('description' in info)) || info.description == '' || info.description == null) {
+            contentWrapper.setAttribute('class', 'content centered');
+        }
+        if (info.icon) {
+            // icon
+            var icon = document.createElement('div');
+            icon.setAttribute('class', 'icon');
+            if ((_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) {
+                icon.style.color = info.icon.color;
+            }
+            var iconSvg = this.iconFinder.getIcon((_c = (_b = info.icon) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '', (_d = info.icon) === null || _d === void 0 ? void 0 : _d.size);
+            if (iconSvg) {
+                icon.appendChild(iconSvg);
+            }
+            contentWrapper.appendChild(icon);
+        }
         // content
         var content = document.createElement('div');
+        content.style.width = "100%";
         content.setAttribute('class', 'info');
-        if (info && 'title' in info && 'description' in info) {
-            content.innerHTML = `<h2>${info.title}</h2><p>${info.description}</p>`;
+        if (customHTML && 'code' in info) {
+            content.innerHTML = info.code;
         }
         else {
-            content.innerHTML = `<h2>Title</h2><p>Description</p>`;
+            if (info && 'title' in info && 'description' in info) {
+                content.innerHTML = `<h2>${info.title}</h2>${info.description ? '<p>' + info.description + '</p>' : ''}`;
+            }
+            else {
+                content.innerHTML = `<h2>Title</h2><p>Description</p>`;
+            }
         }
-        contentWrapper.appendChild(icon);
         contentWrapper.appendChild(content);
         // is dismissable
         if (info.dismissable) {
@@ -248,6 +278,10 @@ export class Toaster {
                 height: height
             };
         }
+    }
+    html(info) {
+        info = Object.assign(Object.assign({}, defaultHTMLToast), info);
+        this.createToast(info, true);
     }
 }
 //# sourceMappingURL=index.js.map
