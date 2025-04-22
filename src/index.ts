@@ -203,25 +203,23 @@ export class Toaster {
             contentWrapper.setAttribute('class', 'content centered');
         }
 
-        if (info.icon) {
-            // icon
-            var icon = document.createElement('div');
-            icon.setAttribute('class', 'icon');
+        // icon
+        var icon = document.createElement('div');
+        icon.setAttribute('class', 'icon');
 
-            if (mood == '') {
-                if (info.icon?.color) {
-                    icon.style.color = info.icon.color;
-                }
-                var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
-                if (iconSvg) {
-                    icon.appendChild(iconSvg)
-                }
-            } else {
-                icon.setAttribute('class', 'icon mood');
-                icon.textContent = mood;
+        if (mood == '') {
+            if (info.icon?.color) {
+                icon.style.color = info.icon.color;
             }
-            contentWrapper.appendChild(icon);
+            var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
+            if (iconSvg) {
+                icon.appendChild(iconSvg)
+            }
+        } else {
+            icon.setAttribute('class', 'icon mood');
+            icon.textContent = mood;
         }
+        contentWrapper.appendChild(icon);
 
         // content
         var content = document.createElement('div');

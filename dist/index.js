@@ -146,25 +146,23 @@ export class Toaster {
         if (info.centered || (!('description' in info)) || info.description == '' || info.description == null) {
             contentWrapper.setAttribute('class', 'content centered');
         }
-        if (info.icon) {
-            // icon
-            var icon = document.createElement('div');
-            icon.setAttribute('class', 'icon');
-            if (mood == '') {
-                if ((_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) {
-                    icon.style.color = info.icon.color;
-                }
-                var iconSvg = this.iconFinder.getIcon((_c = (_b = info.icon) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '', (_d = info.icon) === null || _d === void 0 ? void 0 : _d.size);
-                if (iconSvg) {
-                    icon.appendChild(iconSvg);
-                }
+        // icon
+        var icon = document.createElement('div');
+        icon.setAttribute('class', 'icon');
+        if (mood == '') {
+            if ((_a = info.icon) === null || _a === void 0 ? void 0 : _a.color) {
+                icon.style.color = info.icon.color;
             }
-            else {
-                icon.setAttribute('class', 'icon mood');
-                icon.textContent = mood;
+            var iconSvg = this.iconFinder.getIcon((_c = (_b = info.icon) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '', (_d = info.icon) === null || _d === void 0 ? void 0 : _d.size);
+            if (iconSvg) {
+                icon.appendChild(iconSvg);
             }
-            contentWrapper.appendChild(icon);
         }
+        else {
+            icon.setAttribute('class', 'icon mood');
+            icon.textContent = mood;
+        }
+        contentWrapper.appendChild(icon);
         // content
         var content = document.createElement('div');
         content.style.width = "100%";
