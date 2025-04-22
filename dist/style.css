@@ -143,13 +143,13 @@ toast .mood {
 
 @keyframes fadeup {
     0% {
+        transform: translateY(5%);
         opacity: 0.9;
-        transform: translateY(0%);
     }
 
     100% {
         opacity: 1;
-        transform: translateY(5%);
+        transform: translateY(0%);
     }
 }
 

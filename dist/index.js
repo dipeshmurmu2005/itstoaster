@@ -146,10 +146,10 @@ export class Toaster {
         var toast = document.createElement('toast');
         toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
         if (info.position == "top-right" || info.position == 'top-center' || info.position == 'top-left') {
-            toast.style.animation = 'fadeindown 0.5s';
+            toast.style.animation = 'fadeindown 0.5s linear';
         }
         else {
-            toast.style.animation = 'fadeup 0.5s';
+            toast.style.animation = 'fadeup 0.5s linear';
         }
         var contentWrapper = document.createElement('div');
         contentWrapper.setAttribute('class', 'content');
