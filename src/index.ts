@@ -103,7 +103,7 @@ export class Toaster {
         this.stackSize = this.options.stackSize;
         this.containerId = this.options.containerId;
         this.iconFinder = new Icons();
-        this.positions = ['top-left', 'top-center', 'top-right']
+        this.positions = ['top-left', 'top-center', 'top-right', 'bottom-right', 'bottom-left', 'bottom-center']
         this.createNotificationSection(this.containerId);
         this.attachListeners();
     }
@@ -203,6 +203,12 @@ export class Toaster {
         var toast = document.createElement('toast');
         toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
 
+        if (info.position == "top-right" || info.position == 'top-center' || info.position == 'top-left') {
+            toast.style.animation = 'fadeindown 0.5s';
+        } else {
+            toast.style.animation = 'fadeup 0.5s';
+        }
+
 
         var contentWrapper = document.createElement('div');
         contentWrapper.setAttribute('class', 'content');
@@ -267,7 +273,8 @@ export class Toaster {
         var stackElements = $$('.' + 'toast-' + info.position);
         this.stackSize = this.stackSize < 2 ? 2 : this.stackSize
         if (stackElements.length >= this.stackSize) {
-            stackElements[0].remove();
+            var element = stackElements[0] as HTMLElement;
+            element.remove();
         }
 
         var stack = $('.' + info.position)
@@ -308,7 +315,6 @@ export class Toaster {
 
         function startDuration() {
             startTime = Date.now();
-
             if (showProgress) {
                 // Reset width to current state before animating
                 requestAnimationFrame(() => {
@@ -320,9 +326,11 @@ export class Toaster {
             // Set timeout to remove toast
             toastDurationId = setTimeout(() => {
                 toast.classList.add('toast-removing');
-                toast.addEventListener('animationend', () => {
+                toast.style.animation = 'none';
+                toast.style.animation = 'fadeOut 0.3s';
+                toast.addEventListener('animationend', (e) => {
                     toast.remove();
-                });
+                }, { once: true });
             }, remainingTime);
         }
 
@@ -370,11 +378,14 @@ export class Toaster {
         }
 
         function applyStyle(toast: Node | HTMLDivElement, index: number) {
+            var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
             if (position == 'top-right' || position == 'top-center' || position == 'top-left') {
-                var scaleValue = 1 - (elements.length - (index + 1)) / (elements.length * 5);
                 (toast as HTMLElement).style.position = "absolute";
                 (toast as HTMLElement).style.transform =
                     `scale(${scaleValue}) translateY(${((elements.length - (index + 1)) * 10) + scaleValue}px)`;
+            } else {
+                (toast as HTMLElement).style.position = "absolute";
+                (toast as HTMLElement).style.transform = `scale(${scaleValue}) translateY(-${((elements.length - (index + 1)) * 10) + scaleValue}px)`
             }
         }
     }
@@ -396,8 +407,13 @@ export class Toaster {
 
             stackElements.forEach((toast, toastIndex) => {
                 var position = toast.parentElement?.getAttribute('position');
+
                 const stackDimension = getY(stackElements, toastIndex);
-                toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                if (position != 'bottom-right' && position != 'bottom-left' && position != 'bottom-center') {
+                    toast.style.transform = `scale(1) translateY(${stackDimension.yValue}px)`;
+                } else {
+                    toast.style.transform = `scale(1) translateY(-${stackDimension.yValue}px)`;
+                }
                 (stack as HTMLDivElement).style.height = stackDimension.height + 'px';
             })
         }

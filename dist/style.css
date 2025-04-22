@@ -32,7 +32,34 @@
     right: 10px;
     top: auto !important;
     bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
+
+
+.toast-stack.bottom-left {
+    left: 10px;
+    top: auto !important;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.toast-stack.bottom-center {
+    top: auto !important;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    display: flex;
+    min-width: 400px;
+    flex-direction: column;
+    justify-content: end;
+}
+
+
+
 
 toast {
     height: fit-content;
@@ -45,7 +72,6 @@ toast {
     transform: translateY(0);
     transition-duration: 0.3s;
     cursor: pointer;
-    animation: fadeindown 0.5s;
     border: 1px solid rgb(208, 208, 208);
 }
 
@@ -115,6 +141,19 @@ toast .mood {
     }
 }
 
+@keyframes fadeup {
+    0% {
+        opacity: 0.9;
+        transform: translateY(0%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(5%);
+    }
+}
+
+
 @keyframes fadeOut {
     0% {
         opacity: 1;
@@ -173,6 +212,16 @@ html[theme='dark'] toast .duration-progress .progress {
     }
 
     .toast-stack.top-right {
+        right: 5px;
+        left: 5px;
+    }
+
+    .toast-stack.bottom-left {
+        right: 5px;
+        left: 0px;
+    }
+
+    .toast-stack.bottom-right {
         right: 5px;
         left: 5px;
     }

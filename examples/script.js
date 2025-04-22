@@ -6,13 +6,16 @@ function showToast(index) {
         duration: 3000,
         // dismissable: true,
         showProgress: true,
-        position: 'top-center',
+        position: 'bottom-right',
     });
 
-    // toast.mood('sad', {
+    // toast.mood('happy', {
     //     duration: 2000,
     //     position: 'top-center',
     // })
+    // toast.html({
+    //     code: '<h3>hello</h3>'
+    // });
 }
 let index = 0;
 
