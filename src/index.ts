@@ -15,12 +15,40 @@ type ToastInfo = {
     position?: string | null;
     dismissable?: boolean;
     icon?: Icon;
+    centered?: boolean;
     duration?: number | boolean
 };
 
 type Constructor = {
     containerId: string,
     stackSize: number
+}
+
+type HTMLToast = {
+    code: string;
+    icon?: Icon;
+    position?: string | null;
+    dismissable?: boolean;
+    duration?: number | boolean;
+    centered?: boolean
+}
+
+const defaultHTMLToast: HTMLToast = {
+    code: `
+    <div class="custom">
+        <h1>Want help setting up</h1>
+        <p>Please read the docs</p>
+    </div>
+    `,
+    icon: {
+        name: 'exclamation_circle',
+        color: '#000000',
+        size: 35,
+    },
+    position: 'top-right',
+    dismissable: true,
+    duration: 3000,
+    centered: false,
 }
 
 const defaultOptions: Constructor = {
@@ -91,6 +119,7 @@ export class Toaster {
             title: 'Boom. Nailed it',
             description: 'You just leveled up your workflow.',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'check_circle',
                 size: 30,
@@ -109,6 +138,7 @@ export class Toaster {
             title: "Warning Issued",
             description: 'It’s not broken, but it’s definitely twitchy.',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'exclamation_circle',
                 size: 30,
@@ -128,6 +158,7 @@ export class Toaster {
             title: "Crash Landing",
             description: 'That didn’t go as expected. Let’s debug',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'triangular_error',
                 size: 30,
@@ -147,6 +178,7 @@ export class Toaster {
             title: "Ping from the System",
             description: 'Nothing’s broken. Just keeping you informed',
             duration: 3000,
+            centered: false,
             icon: {
                 name: 'info_circle',
                 size: 30,
@@ -160,42 +192,52 @@ export class Toaster {
     }
 
 
-    createToast(info: ToastInfo, mood: string = '') {
+    createToast(info: ToastInfo | HTMLToast, mood: string = '', customHTML: boolean = false) {
         var toast = document.createElement('toast');
         toast.setAttribute('class', `toast-element dark:bg-[#08090a] dark:border dark:border-[#222226] dark:text-white toast-${info.position}`);
-        var toastContent = document.createElement('div');
-        toastContent.setAttribute('class', 'content');
 
-        // icon
-        var icon = document.createElement('div');
-        icon.setAttribute('class', 'icon');
-
-        if (mood == '') {
-            if (info.icon?.color) {
-                icon.style.color = info.icon.color;
-            }
-            var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
-            if (iconSvg) {
-                icon.appendChild(iconSvg)
-            }
-        } else {
-            icon.setAttribute('class', 'icon mood');
-            icon.textContent = mood;
-        }
 
         var contentWrapper = document.createElement('div');
         contentWrapper.setAttribute('class', 'content');
+        if (info.centered || (!('description' in info)) || info.description == '' || info.description == null) {
+            contentWrapper.setAttribute('class', 'content centered');
+        }
+
+        if (info.icon) {
+            // icon
+            var icon = document.createElement('div');
+            icon.setAttribute('class', 'icon');
+
+            if (mood == '') {
+                if (info.icon?.color) {
+                    icon.style.color = info.icon.color;
+                }
+                var iconSvg = this.iconFinder.getIcon(info.icon?.name ?? '', info.icon?.size);
+                if (iconSvg) {
+                    icon.appendChild(iconSvg)
+                }
+            } else {
+                icon.setAttribute('class', 'icon mood');
+                icon.textContent = mood;
+            }
+            contentWrapper.appendChild(icon);
+        }
 
         // content
         var content = document.createElement('div');
+        content.style.width = "100%";
         content.setAttribute('class', 'info');
-        if (info && 'title' in info && 'description' in info) {
-            content.innerHTML = `<h2>${info.title}</h2><p>${info.description}</p>`;
+
+        if (customHTML && 'code' in info) {
+            content.innerHTML = info.code;
         } else {
-            content.innerHTML = `<h2>Title</h2><p>Description</p>`;
+            if (info && 'title' in info && 'description' in info) {
+                content.innerHTML = `<h2>${info.title}</h2>${info.description ? '<p>' + info.description + '</p>' : ''}`;
+            } else {
+                content.innerHTML = `<h2>Title</h2><p>Description</p>`;
+            }
         }
 
-        contentWrapper.appendChild(icon);
         contentWrapper.appendChild(content);
 
         // is dismissable
@@ -348,5 +390,9 @@ export class Toaster {
         if (mood != '') {
             this.createToast(info, mood);
         }
+    }
+    html(info: HTMLToast) {
+        info = { ...defaultHTMLToast, ...info };
+        this.createToast(info, '', true);
     }
 }

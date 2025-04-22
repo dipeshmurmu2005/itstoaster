@@ -68,6 +68,7 @@ toast .icon {
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    height: fit-content;
 }
 
 toast .dismiss-btn {
@@ -91,12 +92,13 @@ toast .dismiss-btn:active {
 toast h2 {
     font-size: 0.875rem;
     font-weight: 600;
-    width: 210px;
 }
 
 toast p {
     font-size: 0.8rem;
     color: gray;
+    max-width:300px;
+    text-wrap:wrap;
 }
 
 toast .mood {
@@ -165,4 +167,16 @@ html[data-theme='dark'] toast .dismiss-btn:hover,
         right: 5px;
         left: 5px;
     }
+}
+
+.custom {
+    display: grid;
+}
+
+.custom h1 {
+    font-weight: bold;
+}
+
+.centered {
+    align-items: center;
 }
