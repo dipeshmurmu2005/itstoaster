@@ -97,8 +97,8 @@ toast h2 {
 toast p {
     font-size: 0.8rem;
     color: gray;
-    max-width:300px;
-    text-wrap:wrap;
+    max-width: 300px;
+    text-wrap: wrap;
 }
 
 toast .mood {
@@ -139,6 +139,10 @@ toast .mood {
     toast .dismiss-btn:hover {
         color: rgb(193, 193, 193);
     }
+
+    toast .duration-progress .progress {
+        background: linear-gradient(to right, white, gray);
+    }
 }
 
 html[data-theme='dark'] toast,
@@ -151,6 +155,11 @@ html[theme='dark'] toast {
 html[data-theme='dark'] toast .dismiss-btn:hover,
 [theme='dark'] toast .dismiss-btn:hover {
     color: rgb(193, 193, 193);
+}
+
+html[data-theme='dark'] toast .duration-progress .progress,
+html[theme='dark'] toast .duration-progress .progress {
+    background: linear-gradient(to right, white, gray);
 }
 
 @media screen and (max-width:700px) {
@@ -179,4 +188,18 @@ html[data-theme='dark'] toast .dismiss-btn:hover,
 
 .centered {
     align-items: center;
+}
+
+toast .duration-progress {
+    height: 4px;
+    width: 100%;
+    border: 1px solid #222226;
+    margin-top: 5px;
+    border-radius: 1.2px;
+}
+
+toast .duration-progress .progress {
+    height: 100%;
+    width: 100%;
+    background-color: #222226;
 }

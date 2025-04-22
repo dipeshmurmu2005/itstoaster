@@ -74,6 +74,7 @@ export class Toaster {
                 size: 30,
                 color: undefined,
             },
+            showProgress: false,
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
         if (this.positions.find((position) => position == finalInfo.position)) {
@@ -93,6 +94,7 @@ export class Toaster {
                 size: 30,
                 color: undefined,
             },
+            showProgress: false,
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
         if (this.positions.find((position) => position == finalInfo.position)) {
@@ -112,6 +114,7 @@ export class Toaster {
                 size: 30,
                 color: undefined,
             },
+            showProgress: false,
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
         if (this.positions.find((position) => position == finalInfo.position)) {
@@ -131,6 +134,7 @@ export class Toaster {
                 size: 30,
                 color: undefined,
             },
+            showProgress: false,
         };
         const finalInfo = Object.assign(Object.assign(Object.assign({}, defaultInfo), info), { icon: Object.assign(Object.assign({}, defaultInfo.icon), info.icon) });
         if (this.positions.find((position) => position == finalInfo.position)) {
@@ -208,15 +212,67 @@ export class Toaster {
         //    if duration
         if (info.duration != false) {
             var timer = info.duration == true ? 3000 : info.duration;
-            setTimeout(() => {
+            this.durationController(toast, timer !== null && timer !== void 0 ? timer : 3000, info.showProgress);
+        }
+        var stackElements = $$('.' + 'toast-' + info.position);
+        this.styleStack(stackElements, (_e = info.position) !== null && _e !== void 0 ? _e : null);
+    }
+    durationController(toast, timer, showProgress) {
+        if (showProgress) {
+            // Create progress bar structure
+            var progressBar = document.createElement('div');
+            progressBar.setAttribute('class', 'duration-progress');
+            var progress = document.createElement('div');
+            progress.setAttribute('class', 'progress');
+            progressBar.appendChild(progress);
+            toast.appendChild(progressBar);
+        }
+        // Duration logic
+        var startTime = Date.now();
+        var remainingTime = timer;
+        var elapsedTime = 0;
+        var toastDurationId = Date.now();
+        var isStop = false;
+        function startDuration() {
+            startTime = Date.now();
+            if (showProgress) {
+                // Reset width to current state before animating
+                requestAnimationFrame(() => {
+                    progress.style.transition = 'none'; // Remove previous transition
+                    progress.style.transition = `width ${remainingTime}ms linear`;
+                    progress.style.width = '0%';
+                });
+            }
+            // Set timeout to remove toast
+            toastDurationId = setTimeout(() => {
                 toast.classList.add('toast-removing');
                 toast.addEventListener('animationend', () => {
                     toast.remove();
                 });
-            }, timer);
+            }, remainingTime);
         }
-        var stackElements = $$('.' + 'toast-' + info.position);
-        this.styleStack(stackElements, (_e = info.position) !== null && _e !== void 0 ? _e : null);
+        // Pause on hover
+        toast.addEventListener('mouseover', () => {
+            if (!isStop) {
+                clearTimeout(toastDurationId);
+                elapsedTime = Date.now() - startTime;
+                remainingTime = remainingTime - elapsedTime;
+                if (showProgress) {
+                    const computedStyle = window.getComputedStyle(progress);
+                    const currentWidth = computedStyle.width;
+                    progress.style.transition = 'none';
+                    progress.style.width = currentWidth;
+                }
+            }
+            isStop = true;
+        });
+        // Resume on mouse leave
+        toast.addEventListener('mouseleave', () => {
+            isStop = false;
+            startDuration();
+        });
+        // Start the duration initially
+        startDuration();
     }
     styleStack(elements, position, reStack = false) {
         if (elements.length > 1) {
