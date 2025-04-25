@@ -200,6 +200,8 @@ export class Toaster {
             contentWrapper.appendChild(closeBtn);
             closeBtn.addEventListener('click', () => {
                 toast.classList.add('toast-removing');
+                toast.style.animation = 'none';
+                toast.style.animation = 'fadeOut 0.3s';
                 toast.addEventListener('animationend', () => {
                     toast.remove();
                 });
@@ -391,9 +393,12 @@ export class Toaster {
             this.createToast(info, mood);
         }
     }
-    html(info) {
-        info = Object.assign(Object.assign({}, defaultHTMLToast), info);
-        this.createToast(info, '', true);
+    html(code, info) {
+        var newInfo = Object.assign(Object.assign({}, defaultHTMLToast), info);
+        if (code) {
+            newInfo.code = code;
+        }
+        this.createToast(newInfo, '', true);
     }
 }
 //# sourceMappingURL=index.js.map

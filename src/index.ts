@@ -25,6 +25,15 @@ type Constructor = {
     stackSize: number
 }
 
+type HTMLToastOptions = {
+    icon?: Icon;
+    position?: string | null;
+    dismissable?: boolean;
+    duration?: number | boolean;
+    centered?: boolean;
+    showProgress?: boolean;
+}
+
 type HTMLToast = {
     code: string;
     icon?: Icon;
@@ -262,6 +271,8 @@ export class Toaster {
             contentWrapper.appendChild(closeBtn);
             closeBtn.addEventListener('click', () => {
                 toast.classList.add('toast-removing');
+                toast.style.animation = 'none';
+                toast.style.animation = 'fadeOut 0.3s';
                 toast.addEventListener('animationend', () => {
                     toast.remove();
                 });
@@ -475,8 +486,11 @@ export class Toaster {
             this.createToast(info, mood);
         }
     }
-    html(info: HTMLToast) {
-        info = { ...defaultHTMLToast, ...info };
-        this.createToast(info, '', true);
+    html(code: string, info: HTMLToastOptions) {
+        var newInfo = { ...defaultHTMLToast, ...info };
+        if (code) {
+            newInfo.code = code;
+        }
+        this.createToast(newInfo, '', true);
     }
 }

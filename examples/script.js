@@ -3,18 +3,16 @@ const options = {}
 const toast = new Toaster(options);
 function showToast(index) {
     toast.info({
-        duration: 3000,
-        // dismissable: true,
-        showProgress: true,
+        dismissable: true,
         position: 'bottom-right',
     });
 
-    // toast.mood('happy', {
-    //     duration: 2000,
-    //     position: 'top-center',
-    // })
-    // toast.html({
-    //     code: '<h3>hello</h3>'
+    // // toast.mood('happy', {
+    // //     duration: 2000,
+    // //     position: 'top-center',
+    // // })
+    // toast.html("<h3>hello</h3>", {
+    //     duration: 3000,
     // });
 }
 let index = 0;

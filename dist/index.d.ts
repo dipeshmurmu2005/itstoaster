@@ -17,6 +17,14 @@ type Constructor = {
     containerId: string;
     stackSize: number;
 };
+type HTMLToastOptions = {
+    icon?: Icon;
+    position?: string | null;
+    dismissable?: boolean;
+    duration?: number | boolean;
+    centered?: boolean;
+    showProgress?: boolean;
+};
 type HTMLToast = {
     code: string;
     icon?: Icon;
@@ -45,7 +53,7 @@ export declare class Toaster {
     attachListeners(): void;
     getMoodEmoji(mood: string): "😊" | "😞" | "😡" | "😲" | "😃" | "😕" | "🌟" | "🙏" | "😐" | "😌" | "😣" | "💪" | "😅" | "😟" | "😳" | "🕰️" | "🌞" | undefined;
     mood(mood: string, info: ToastInfo): void;
-    html(info: HTMLToast): void;
+    html(code: string, info: HTMLToastOptions): void;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map
