@@ -6,7 +6,7 @@
     align-items: center;
     min-width: 400px;
     gap: 10px;
-    position: absolute;
+    position: fixed;
     top: 20px;
     transition-duration: 0.3s;
 }
@@ -20,7 +20,6 @@
 }
 
 .toast-stack.top-center {
-    position: absolute;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);

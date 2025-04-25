@@ -337,13 +337,8 @@ export class Toaster {
                 stack.style.height = stackDimension.height + 'px';
             });
         }
-        toastStacks.forEach(stack => {
-            stack.addEventListener('mouseleave', () => {
-                reformStack(stack);
-            });
-            stack.addEventListener('touchend', () => {
-                reformStack(stack);
-            });
+        toastStacks.forEach((stack) => {
+            ['mouseleave', 'touchstart', 'touchend'].forEach(eventType => stack.addEventListener(eventType, () => reformStack(stack), { passive: true }));
         });
         const reformStack = (stack) => {
             var _a;
